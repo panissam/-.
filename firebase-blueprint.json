@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Training": {
+      "title": "Training",
+      "description": "Represents a training session available for registration.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the training" },
+        "description": { "type": "string", "description": "Detailed description" },
+        "date": { "type": "string", "description": "Date of training" },
+        "time": { "type": "string", "description": "Time of training" },
+        "location": { "type": "string", "description": "Physical or virtual location" },
+        "capacity": { "type": "number", "description": "Maximum number of attendees" },
+        "registeredCount": { "type": "number", "description": "Current number of registered users" },
+        "imageUrl": { "type": "string", "description": "URL of the training image" }
+      },
+      "required": ["title", "description", "date", "time", "location", "capacity", "registeredCount"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Represents a user registration for a training.",
+      "type": "object",
+      "properties": {
+        "trainingId": { "type": "string", "description": "Reference to the training document ID" },
+        "trainingTitle": { "type": "string", "description": "Cached title of the training" },
+        "userId": { "type": "string", "description": "UID of the user who booked" },
+        "userEmail": { "type": "string", "description": "Email of the user who booked" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the booking was made" }
+      },
+      "required": ["trainingId", "trainingTitle", "userId", "userEmail", "createdAt"]
+    },
+    "Staff": {
+      "title": "Staff",
+      "description": "Information about university staff.",
+      "type": "object",
+      "properties": {
+        "staffId": { "type": "string" },
+        "name": { "type": "string" },
+        "division": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" }
+      },
+      "required": ["staffId", "name", "division", "phone", "email"]
+    }
+  },
+  "firestore": {
+    "/trainings/{trainingId}": {
+      "schema": "Training",
+      "description": "Collection of all available training sessions."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Collection of user registrations."
+    },
+    "/staff_directory/{id}": {
+      "schema": "Staff",
+      "description": "Directory of staff members for mapping."
+    },
+    "/registrations/{id}": {
+      "schema": {
+        "title": "Registration",
+        "type": "object",
+        "properties": {
+          "staffId": { "type": "string" },
+          "courseId": { "type": "string" },
+          "status": { "type": "string", "enum": ["Pending", "Approved", "Rejected"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "academicYear": { "type": "string" },
+          "trainingTitle": { "type": "string" },
+          "userName": { "type": "string" },
+          "userDivision": { "type": "string" }
+        },
+        "required": ["staffId", "courseId", "status", "timestamp", "academicYear", "trainingTitle", "userName", "userDivision"]
+      },
+      "description": "Collection of training registrations."
+    }
+  }
+}
